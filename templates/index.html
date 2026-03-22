@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Search Engine</title>
+</head>
+<body>
+
+  <h1>Search Engine</h1>
+
+  <!-- barra de búsqueda -->
+  <input type="text" id="query" placeholder="Search something">
+  <button onclick="buscar()">Search</button>
+
+  <!-- stats -->
+  <div id="stats"></div>
+
+  <!-- resultados -->
+  <div id="resultados"></div>
+
+  <script>
+    // cargar estadísticas al iniciar
+    fetch('/stats')
+      .then(r => r.json())
+      .then(data => {
+        document.getElementById('stats').innerHTML =
+          `Documents: ${data.total_documents} | Vocabulary: ${data.vocabulary_size} terms`;
+      });
+
+    // buscar al presionar enter
+    document.getElementById('query').addEventListener('keydown', e => {
+      if (e.key === 'Enter') buscar();
+    });
+
+    function buscar() {
+      // elimina espacios al inicio o final
+      const query = document.getElementById('query').value.trim();
+      // debe haber una consulta
+      if (!query) return;
+      //convertir caracteres especiales de la consulta a formato url seguro (espacios y tildes)
+      fetch(`/search?q=${encodeURIComponent(query)}`)
+        .then(r => r.json())
+        .then(data => {
+          // en caso de error como consultas vacías
+          if (data.error) {
+            document.getElementById('resultados').innerHTML = data.error;
+            return;
+          }
+
+          let html = `<p>Results: ${data.total_found} | Time: ${data.search_time_ms}ms</p>`;
+
+          data.results.forEach((doc, i) => {
+            // construye la posición en ranking, título, score, url, target para pestaña nueva, primeros 200 caracteres de preview
+            html += `
+              <hr>
+              <p><b>#${i+1} — ${doc.title}</b> (Score: ${doc.score})</p>
+              <p><a href="${doc.source}" target="_blank">${doc.source}</a></p>
+              <p>${doc.text.substring(0, 200)}...</p>
+            `;
+          });
+          // insertar html en div resultados
+          document.getElementById('resultados').innerHTML = html;
+        });
+    }
+  </script>
+
+</body>
+</html>
