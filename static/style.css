@@ -1,8 +1,106 @@
-.search-wrapper {
-  position: relative;
-  display: inline-block;
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
+body {
+    font-family: 'Playfair Display', serif;
+    background-color: #fff5f7;
+    color: #4a4a4a;
+    padding: 40px 20px;
+}
+
+/* header */
+h1 {
+    text-align: center;
+    color: #c2607a;
+    font-size: 2rem;
+    margin-bottom: 30px;
+    letter-spacing: 2px;
+}
+
+/* barra de búsqueda */
+.search-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 400px;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 10px 16px;
+    border: 1.5px solid #e8a0b0;
+    border-radius: 25px;
+    font-size: 0.95rem;
+    outline: none;
+    background: white;
+    color: #4a4a4a;
+}
+
+input[type="text"]:focus {
+    border-color: #c2607a;
+}
+
+button {
+    padding: 10px 22px;
+    background-color: #c2607a;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    margin-left: 8px;
+}
+
+button:hover {
+    background-color: #a84d65;
+}
+
+/* centrar barra de bsqd */
+.search-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+/* stats */
+#stats {
+    text-align: center;
+    font-size: 0.8rem;
+    color: #999;
+    margin-bottom: 24px;
+}
+
+/* resultados */
+#resultados {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+#resultados p {
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #f0c0cc;
+    margin: 16px 0;
+}
+
+a {
+    color: #c2607a;
+    font-size: 0.8rem;
+}
+
+a:hover {
+    color: #a84d65;
+}
+
+/* sugerencias */
 #suggestions {
   position: absolute;
   top: 100%;
@@ -20,4 +118,8 @@
 
 .suggestion-item:hover {
   background: #eee;
+}
+
+#suggestions:empty {
+    border: none;
 }
