@@ -10,7 +10,7 @@ Makeup is a constantly evolving and highly trend-driven field, with new products
 
 ### 1. Necessary installations
 ```bash
-pip install flask
+pip install -r requirements.txt
 ```
 
 ### 2. Initiate server
@@ -26,6 +26,9 @@ http://localhost:5000
 ---
 
 ## Enhancement
+C - Autocomplete
+Term suggestions as the user types in the search bar
+For autocomplete, words are taken from the inverted index. Among all the keys stored in the inverted index, those that start with the first letters typed by the user in the search bar are suggested (first five).
 
 ## Screenshots
 

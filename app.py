@@ -48,6 +48,26 @@ def stats():
         "domain": "Makeup"
     })
 
+@app.route("/autocomplete")
+def autocomplete():
+    # se eliminan espacios y se escribe en minúsuclas lo que el usuario está escribiendo en el input
+    prefix = request.args.get("q", "").strip().lower()
+    
+    if len(prefix) < 2:  # debe haber dos letras
+        return jsonify([])
+    
+    suggestions = [
+        # engine.index.index.keys() contiene las palabras del vocabulario
+        term for term in engine.index.index.keys()
+        # con startswith(prefix) se muestran las sugerencias que inician con lo que escribe el usuario
+        if term.startswith(prefix)
+    ]
+    
+    # se muestran las top 5 sugerencias
+    suggestions = sorted(suggestions)[:5]
+    
+    return jsonify(suggestions)
+
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)

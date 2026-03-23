@@ -1,0 +1,23 @@
+.search-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+#suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #4e4a4a;
+  width: 100%;
+  z-index: 10;
+}
+
+.suggestion-item {
+  padding: 5px;
+  cursor: pointer;
+}
+
+.suggestion-item:hover {
+  background: #eee;
+}

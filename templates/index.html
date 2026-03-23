@@ -3,13 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <title>Search Engine</title>
+  <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
 
   <h1>Search Engine</h1>
 
   <!-- barra de búsqueda -->
-  <input type="text" id="query" placeholder="Search something">
+  <div class="search-wrapper">
+    <input type="text" id="query" placeholder="Search something">
+    <div id="suggestions"></div>
+  </div>
   <button onclick="buscar()">Search</button>
 
   <!-- stats -->
@@ -30,6 +34,55 @@
     // buscar al presionar enter
     document.getElementById('query').addEventListener('keydown', e => {
       if (e.key === 'Enter') buscar();
+    });
+
+    document.getElementById('query').addEventListener('input', e => {
+      const value = e.target.value.trim();
+      // se muestran sugerencias solamente si el input es mayor a 2 letras
+      if (value.length < 2) {
+        hideSuggestions();
+        return;
+      }
+
+      fetch(`/autocomplete?q=${encodeURIComponent(value)}`)
+        .then(r => r.json())
+        .then(suggestions => {
+          showSuggestions(suggestions);
+        });
+    });
+
+    function showSuggestions(suggestions) {
+      const container = document.getElementById('suggestions');
+
+      if (suggestions.length === 0) {
+        hideSuggestions();
+        return;
+      }
+
+      // un div por cada sugerencia
+      container.innerHTML = suggestions.map(term => `
+        <div class="suggestion-item" onclick="selectSuggestion('${term}')">
+          ${term}
+        </div>
+      `).join('');
+    }
+
+    function selectSuggestion(term) {
+      // la sugerencia se muestra en el input y la barra search
+      document.getElementById('query').value = term;
+      hideSuggestions();
+      buscar();
+    }
+    // función para quitar las sugerencias
+    function hideSuggestions() {
+      document.getElementById('suggestions').innerHTML = '';
+    }
+
+    // se quitan las sugerencias si el usuario hace click fuera
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.search-wrapper')) {
+        hideSuggestions();
+      }
     });
 
     function buscar() {
